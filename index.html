@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Zero4 AI</title>
+
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+
+    <!-- MARKDOWN -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/marked/marked.min.js">
+    </script>
+
+
+    <!-- SANITIZER -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js">
+    </script>
+
+
+    <!-- MATHJAX -->
+
+    <script>
+
+        window.MathJax = {
+
+            tex: {
+
+                inlineMath: [
+                    ["$", "$"],
+                    ["\\(", "\\)"]
+                ],
+
+                displayMath: [
+                    ["$$", "$$"],
+                    ["\\[", "\\]"]
+                ]
+
+            },
+
+            svg: {
+                fontCache: "global"
+            }
+
+        };
+
+    </script>
+
+
+    <script
+        async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+    </script>
+
+</head>
+
+
+<body>
+
+
+{% if not logged_in %}
+
+
+<!-- =====================================================
+     LOGIN / REGISTER
+====================================================== -->
+
+<div class="auth-page">
+
+
+    <div class="auth-card">
+
+
+        <div class="auth-logo">
+            ⚡ Zero4 AI
+        </div>
+
+
+        <p class="auth-subtitle">
+            Your AI assistant for chat, study and coding.
+        </p>
+
+
+        <!-- LOGIN -->
+
+        <div
+            class="auth-form"
+            id="loginForm"
+        >
+
+            <h1>
+                Welcome back
+            </h1>
+
+
+            <p>
+                Login to continue to Zero4 AI.
+            </p>
+
+
+            <input
+                type="email"
+                id="loginEmail"
+                placeholder="Email address"
+                autocomplete="email"
+            >
+
+
+            <input
+                type="password"
+                id="loginPassword"
+                placeholder="Password"
+                autocomplete="current-password"
+            >
+
+
+            <button
+                id="loginButton"
+                type="button"
+            >
+                Login
+            </button>
+
+
+            <div
+                class="auth-message"
+                id="loginMessage"
+            ></div>
+
+
+            <p class="switch-auth">
+
+                Don't have an account?
+
+                <button
+                    type="button"
+                    id="showRegister"
+                >
+                    Create account
+                </button>
+
+            </p>
+
+
+        </div>
+
+
+        <!-- REGISTER -->
+
+        <div
+            class="auth-form hidden"
+            id="registerForm"
+        >
+
+            <h1>
+                Create account
+            </h1>
+
+
+            <p>
+                Start using Zero4 AI.
+            </p>
+
+
+            <input
+                type="text"
+                id="registerName"
+                placeholder="Your name"
+                autocomplete="name"
+            >
+
+
+            <input
+                type="email"
+                id="registerEmail"
+                placeholder="Email address"
+                autocomplete="email"
+            >
+
+
+            <input
+                type="password"
+                id="registerPassword"
+                placeholder="Password (minimum 6 characters)"
+                autocomplete="new-password"
+            >
+
+
+            <button
+                id="registerButton"
+                type="button"
+            >
+                Create account
+            </button>
+
+
+            <div
+                class="auth-message"
+                id="registerMessage"
+            ></div>
+
+
+            <p class="switch-auth">
+
+                Already have an account?
+
+                <button
+                    type="button"
+                    id="showLogin"
+                >
+                    Login
+                </button>
+
+            </p>
+
+
+        </div>
+
+
+        <div class="auth-plan">
+            Free Plan • Zero4 AI
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+{% else %}
+
+
+<!-- =====================================================
+     MAIN APPLICATION
+====================================================== -->
+
+<div class="app">
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+
+        <div class="logo">
+            ⚡ Zero4 AI
+        </div>
+
+
+        <button
+            class="new-chat"
+            id="newChat"
+            type="button"
+        >
+            ＋ New Chat
+        </button>
+
+
+        <div class="recent-title">
+            Recent Chats
+        </div>
+
+
+        <div id="recentChats"></div>
+
+
+        <div class="sidebar-bottom">
+
+
+            <div id="settingsButton">
+                ⚙️ Settings
+            </div>
+
+
+            <div id="profileButton">
+                👤 {{ user["name"] }}
+            </div>
+
+
+            <a
+                class="logout-button"
+                href="/logout"
+            >
+                ↪ Logout
+            </a>
+
+
+        </div>
+
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+
+        <header class="topbar">
+
+
+            <button
+                class="menu-btn"
+                id="menuButton"
+                type="button"
+            >
+                ☰
+            </button>
+
+
+            <span>
+                Zero4 AI
+            </span>
+
+
+        </header>
+
+
+        <!-- CHAT -->
+
+        <section
+            class="chat-container"
+            id="chatContainer"
+        >
+
+
+            <div
+                class="welcome"
+                id="welcome"
+            >
+
+                <h1>
+                    What can I help you with?
+                </h1>
+
+
+                <p>
+                    Ask Zero4 AI anything.
+                </p>
+
+
+            </div>
+
+
+        </section>
+
+
+        <!-- COMPOSER -->
+
+        <div class="composer-container">
+
+
+            <div class="composer">
+
+
+                <button
+                    class="attach-btn"
+                    id="attachButton"
+                    type="button"
+                >
+                    ＋
+                </button>
+
+
+                <textarea
+                    id="message"
+                    placeholder="Message Zero4 AI..."
+                    rows="1"
+                    autocomplete="off"
+                ></textarea>
+
+
+                <button
+                    class="send-btn"
+                    id="sendButton"
+                    type="button"
+                >
+                    ➤
+                </button>
+
+
+            </div>
+
+
+            <p class="disclaimer">
+                Zero4 AI can make mistakes. Check important information.
+            </p>
+
+
+        </div>
+
+
+    </main>
+
+
+</div>
+
+
+<!-- =====================================================
+     SETTINGS
+====================================================== -->
+
+<div
+    class="modal"
+    id="settingsModal"
+>
+
+
+    <div class="modal-box">
+
+
+        <button
+            class="close-modal"
+            id="closeSettings"
+            type="button"
+        >
+            ×
+        </button>
+
+
+        <h2>
+            ⚙️ Settings
+        </h2>
+
+
+        <p>
+            Zero4 AI Settings
+        </p>
+
+
+        <div class="setting-row">
+
+            <span>
+                Language
+            </span>
+
+            <span>
+                Automatic
+            </span>
+
+        </div>
+
+
+        <div class="setting-row">
+
+            <span>
+                AI Model
+            </span>
+
+            <span>
+                Groq AI
+            </span>
+
+        </div>
+
+
+        <div class="setting-row">
+
+            <span>
+                Plan
+            </span>
+
+            <span>
+                {{ user["plan"] }}
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     PROFILE
+====================================================== -->
+
+<div
+    class="modal"
+    id="profileModal"
+>
+
+
+    <div class="modal-box">
+
+
+        <button
+            class="close-modal"
+            id="closeProfile"
+            type="button"
+        >
+            ×
+        </button>
+
+
+        <h2>
+            👤 Profile
+        </h2>
+
+
+        <div class="profile-card">
+
+
+            <div class="profile-avatar">
+                Z4
+            </div>
+
+
+            <div>
+
+                <strong>
+                    {{ user["name"] }}
+                </strong>
+
+                <br>
+
+                <span>
+                    {{ user["email"] }}
+                </span>
+
+                <br>
+
+                <span>
+                    {{ user["plan"] }} Plan
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+{% endif %}
+
+
+<script
+    src="{{ url_for('static', filename='script.js') }}"
+></script>
+
+
+</body>
+
+</html>
