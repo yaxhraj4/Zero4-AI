@@ -33,7 +33,7 @@ DATABASE = "zero4.db"
 
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
-CHAT_MODEL = "gemini-2.5-flash"
+CHAT_MODEL = "gemini-3.8-flash"
 IMAGE_MODEL = "gemini-3.1-flash-image"
 
 gemini_client = None
