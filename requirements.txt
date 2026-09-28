@@ -1,4 +1,5 @@
 Flask
-groq
-Werkzeug
+Werkzueg
 gunicorn
+google-genai
+Pillow
