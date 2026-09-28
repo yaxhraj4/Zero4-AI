@@ -1,29 +1,13 @@
-/* =========================================================
-   ZERO4 AI — GEMINI STYLE UI
-   Mobile-first / Dark / Glass Composer
-   ========================================================= */
-
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-:root {
-    --bg: #000000;
-    --text: #f4f4f7;
-    --muted: #8d8d96;
-    --border: rgba(255,255,255,0.12);
-    --glass: rgba(255,255,255,0.075);
-    --glass-border: rgba(255,255,255,0.20);
-    --blue: #5f6fff;
-}
-
 html,
 body {
     width: 100%;
     height: 100%;
-    overflow: hidden;
 }
 
 body {
@@ -35,29 +19,17 @@ body {
         "Segoe UI",
         sans-serif;
 
-    background:
-        radial-gradient(
-            ellipse at 50% 100%,
-            rgba(24, 38, 110, 0.42),
-            transparent 42%
-        ),
-        #000;
-
-    color: var(--text);
+    background: #000;
+    color: #fff;
 }
-
-/* =========================================================
-   COMMON
-   ========================================================= */
 
 button,
 input,
 textarea {
-    font-family: inherit;
+    font: inherit;
 }
 
 button {
-    border: 0;
     cursor: pointer;
 }
 
@@ -65,9 +37,10 @@ button {
     display: none !important;
 }
 
-/* =========================================================
+
+/* =========================
    AUTH
-   ========================================================= */
+========================= */
 
 .auth-page {
     min-height: 100vh;
@@ -76,52 +49,35 @@ button {
     align-items: center;
     justify-content: center;
 
-    padding: 20px;
+    padding: 24px;
 
     background:
         radial-gradient(
             circle at top,
-            rgba(80, 90, 255, 0.16),
-            transparent 45%
-        ),
-        #000;
+            #171717 0%,
+            #080808 45%,
+            #000 100%
+        );
 }
 
 .auth-card {
-    width: min(420px, 100%);
+    width: 100%;
+    max-width: 430px;
 
-    padding: 35px;
+    padding: 38px 28px;
 
-    background: rgba(15,15,18,0.92);
-
-    border: 1px solid var(--border);
-
-    border-radius: 25px;
-
-    text-align: center;
-
-    box-shadow:
-        0 30px 100px rgba(0,0,0,0.7);
-}
-
-.logo-big,
-.brand-icon,
-.welcome-logo,
-.profile-avatar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    border: 1px solid #272727;
+    border-radius: 28px;
 
     background:
-        linear-gradient(
-            135deg,
-            #6575ff,
-            #9a69ff
-        );
+        rgba(18, 18, 18, 0.82);
 
-    color: white;
+    backdrop-filter: blur(25px);
 
-    font-weight: 900;
+    box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.65);
+
+    text-align: center;
 }
 
 .logo-big {
@@ -130,18 +86,34 @@ button {
 
     margin: 0 auto 18px;
 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     border-radius: 22px;
 
-    font-size: 24px;
+    background: linear-gradient(
+        135deg,
+        #ffffff,
+        #777
+    );
+
+    color: #000;
+
+    font-size: 25px;
+    font-weight: 900;
 }
 
 .auth-card h1 {
     font-size: 32px;
+    font-weight: 800;
 }
 
 .auth-subtitle {
-    color: var(--muted);
-    margin: 7px 0 30px;
+    margin-top: 8px;
+    margin-bottom: 30px;
+
+    color: #9b9b9b;
 }
 
 .auth-card h2 {
@@ -151,65 +123,67 @@ button {
 .auth-card input {
     width: 100%;
 
-    padding: 14px;
-
     margin-bottom: 12px;
+    padding: 15px 16px;
 
-    border-radius: 13px;
-
-    background: #111115;
-
-    border: 1px solid var(--border);
-
-    color: white;
+    border: 1px solid #2b2b2b;
+    border-radius: 15px;
 
     outline: none;
+
+    background: #111;
+    color: #fff;
 }
 
 .auth-card input:focus {
-    border-color: #6876ff;
+    border-color: #666;
 }
 
-.auth-card > div button {
+.auth-card button {
     width: 100%;
 
-    padding: 14px;
+    margin-top: 4px;
+    padding: 15px;
 
-    border-radius: 13px;
+    border: none;
+    border-radius: 15px;
 
-    color: white;
+    background: #fff;
+    color: #000;
 
-    font-weight: 700;
+    font-weight: 750;
+}
 
-    background:
-        linear-gradient(
-            135deg,
-            #6170ff,
-            #9869ff
-        );
+.auth-card button:hover {
+    opacity: 0.9;
 }
 
 .switch-text {
     margin-top: 18px;
 
-    color: #8d8d96;
-
+    color: #888;
     font-size: 14px;
 }
 
 .switch-text span {
-    color: #8993ff;
+    color: #fff;
     cursor: pointer;
+    font-weight: 700;
 }
 
 #authMessage {
+    min-height: 22px;
+
     margin-top: 15px;
-    color: #ff6878;
+
+    color: #ff8c8c;
+    font-size: 14px;
 }
 
-/* =========================================================
-   MAIN APP
-   ========================================================= */
+
+/* =========================
+   APP
+========================= */
 
 .app {
     width: 100%;
@@ -217,57 +191,74 @@ button {
 
     display: flex;
 
-    background:
-        radial-gradient(
-            ellipse at 50% 100%,
-            rgba(20, 34, 100, 0.48),
-            transparent 48%
-        ),
-        #000;
+    background: #000;
+
+    overflow: hidden;
 }
 
-/* =========================================================
+
+/* =========================
    SIDEBAR
-   ========================================================= */
+========================= */
 
 .sidebar {
-    width: 270px;
+    width: 255px;
     height: 100vh;
+
+    flex-shrink: 0;
 
     display: flex;
     flex-direction: column;
 
-    padding: 20px;
+    padding: 22px 15px;
 
-    background: rgba(8,8,10,0.95);
+    border-right: 1px solid #1c1c1c;
 
-    border-right: 1px solid var(--border);
-
-    z-index: 20;
+    background: #050505;
 }
 
 .brand {
     display: flex;
     align-items: center;
+
     gap: 11px;
 
-    margin-bottom: 25px;
+    padding: 4px 8px 25px;
 }
 
 .brand-icon {
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     border-radius: 13px;
+
+    background: #fff;
+    color: #000;
+
+    font-size: 14px;
+    font-weight: 900;
 }
 
 .brand strong {
     display: block;
+
+    font-size: 17px;
 }
 
 .brand span {
-    color: #8d86ff;
-    font-size: 13px;
+    display: block;
+
+    margin-top: 2px;
+
+    color: #777;
+
+    font-size: 9px;
+    letter-spacing: 2px;
+    font-weight: 800;
 }
 
 .new-chat {
@@ -275,13 +266,17 @@ button {
 
     padding: 13px;
 
-    border-radius: 13px;
+    border: 1px solid #292929;
+    border-radius: 15px;
 
-    background: #15151a;
+    background: #151515;
+    color: #fff;
 
-    border: 1px solid var(--border);
+    text-align: left;
+}
 
-    color: white;
+.new-chat:hover {
+    background: #1d1d1d;
 }
 
 .sidebar-section {
@@ -289,27 +284,26 @@ button {
 }
 
 .sidebar-title {
-    color: #777781;
+    padding: 0 8px 10px;
 
-    font-size: 11px;
+    color: #686868;
 
-    text-transform: uppercase;
-
-    margin-bottom: 10px;
+    font-size: 12px;
+    font-weight: 700;
 }
 
 .recent-item {
-    padding: 11px;
+    padding: 11px 10px;
 
     border-radius: 10px;
 
-    color: #bcbcc4;
+    color: #aaa;
 
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .recent-item:hover {
-    background: #15151a;
+    background: #111;
 }
 
 .sidebar-bottom {
@@ -318,200 +312,211 @@ button {
     display: flex;
     flex-direction: column;
 
-    gap: 4px;
+    gap: 5px;
 }
 
 .sidebar-bottom button,
 .sidebar-bottom a {
-    padding: 11px;
+    width: 100%;
+
+    padding: 11px 10px;
+
+    border: none;
+    border-radius: 10px;
 
     background: transparent;
-
-    color: #aaaab2;
+    color: #aaa;
 
     text-align: left;
 
-    border-radius: 10px;
-
     text-decoration: none;
+
+    font-size: 13px;
 }
 
 .sidebar-bottom button:hover,
 .sidebar-bottom a:hover {
-    background: #15151a;
-    color: white;
+    background: #111;
+    color: #fff;
 }
 
-/* =========================================================
+
+/* =========================
    MAIN
-   ========================================================= */
+========================= */
 
 .main {
     position: relative;
 
-    flex: 1;
-
-    min-width: 0;
-
+    width: calc(100% - 255px);
     height: 100vh;
 
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            #101010 0%,
+            #050505 35%,
+            #000 75%
+        );
 }
 
-/* =========================================================
-   TOP BAR
-   ========================================================= */
-
 .topbar {
-    height: 65px;
+    height: 70px;
+
+    flex-shrink: 0;
 
     display: flex;
     align-items: center;
     justify-content: space-between;
 
-    padding: 0 25px;
+    padding: 0 28px;
 
-    background: rgba(0,0,0,0.35);
-
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-
-    backdrop-filter: blur(15px);
-
-    z-index: 10;
+    border-bottom: 1px solid #141414;
 }
 
 .topbar h2 {
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 16px;
 }
 
 .status {
-    font-size: 10px;
-    color: #72df93;
+    display: block;
+
+    margin-top: 3px;
+
+    color: #777;
+
+    font-size: 11px;
 }
 
 .plan-badge {
     padding: 7px 12px;
 
-    border-radius: 20px;
+    border: 1px solid #292929;
+    border-radius: 999px;
 
-    background: rgba(100,100,255,0.12);
-
-    border: 1px solid rgba(120,120,255,0.2);
-
-    color: #aaaaff;
+    color: #aaa;
 
     font-size: 11px;
 }
 
-/* =========================================================
-   CHAT AREA
-   ========================================================= */
+
+/* =========================
+   CHAT
+========================= */
 
 .chat-area {
-    width: 100%;
-    height: calc(100vh - 65px);
+    flex: 1;
 
     overflow-y: auto;
 
-    padding:
-        30px
-        18px
-        170px;
-
-    scrollbar-width: none;
+    padding: 40px 20px 150px;
 }
-
-.chat-area::-webkit-scrollbar {
-    display: none;
-}
-
-/* =========================================================
-   GEMINI STYLE WELCOME
-   ========================================================= */
 
 .welcome {
-    width: min(850px, 100%);
+    min-height: 70%;
 
-    margin: 25vh auto 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 
     text-align: center;
 }
 
 .welcome-logo {
-    width: 62px;
-    height: 62px;
+    width: 70px;
+    height: 70px;
 
-    margin: 0 auto 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    border-radius: 20px;
+    margin-bottom: 22px;
 
-    font-size: 21px;
+    border-radius: 23px;
 
-    box-shadow:
-        0 10px 50px rgba(85,90,255,0.25);
+    background: linear-gradient(
+        135deg,
+        #fff,
+        #666
+    );
+
+    color: #000;
+
+    font-size: 23px;
+    font-weight: 900;
 }
 
 .welcome h1 {
-    font-size: clamp(30px, 5vw, 48px);
-
-    font-weight: 500;
+    font-size: clamp(
+        25px,
+        4vw,
+        43px
+    );
 
     letter-spacing: -1.5px;
-
-    margin-bottom: 10px;
 }
 
-.welcome p {
-    color: #777780;
+.welcome > p {
+    margin-top: 10px;
 
-    font-size: 14px;
+    color: #777;
 }
 
 .suggestions {
-    margin-top: 28px;
+    max-width: 760px;
 
     display: grid;
-
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns:
+        repeat(4, 1fr);
 
     gap: 10px;
+
+    margin-top: 30px;
 }
 
 .suggestions button {
-    padding: 13px;
+    min-height: 65px;
 
-    background: rgba(255,255,255,0.045);
+    padding: 12px;
 
-    border: 1px solid rgba(255,255,255,0.08);
+    border: 1px solid #242424;
+    border-radius: 16px;
 
-    border-radius: 15px;
+    background: rgba(
+        20,
+        20,
+        20,
+        0.7
+    );
 
-    color: #c5c5cc;
-
-    text-align: left;
+    color: #bbb;
 
     transition: 0.2s;
 }
 
 .suggestions button:hover {
-    background: rgba(255,255,255,0.09);
-
-    border-color: rgba(255,255,255,0.18);
+    background: #171717;
+    color: #fff;
+    transform: translateY(-2px);
 }
 
-/* =========================================================
+
+/* =========================
    MESSAGES
-   ========================================================= */
+========================= */
 
 .message {
-    width: min(850px, 100%);
+    max-width: 850px;
 
-    margin: 0 auto 25px;
+    margin: 0 auto 22px;
 
     display: flex;
 
-    gap: 12px;
+    gap: 13px;
 
     line-height: 1.65;
 }
@@ -528,126 +533,115 @@ button {
 
     border-radius: 50%;
 
-    background: #202027;
+    background: #fff;
+    color: #000;
 
     font-size: 10px;
+    font-weight: 800;
 }
 
 .ai-avatar {
-    background:
-        linear-gradient(
-            135deg,
-            #6272ff,
-            #9a69ff
-        );
+    background: #222;
+    color: #fff;
+
+    border: 1px solid #333;
 }
 
 .message-content {
-    max-width: 760px;
+    max-width: 100%;
 
-    padding-top: 3px;
+    padding: 9px 13px;
+
+    color: #ddd;
 
     overflow-wrap: anywhere;
 }
 
 .user-message .message-content {
-    padding: 10px 14px;
+    padding: 10px 15px;
 
-    background: #18181e;
+    border: 1px solid #252525;
+    border-radius: 17px;
 
-    border: 1px solid #25252d;
-
-    border-radius:
-        15px
-        15px
-        15px
-        4px;
-}
-
-.ai-message .message-content {
-    color: #dedee4;
+    background: #151515;
 }
 
 .message-content code {
-    padding: 2px 6px;
+    padding: 3px 6px;
 
-    border-radius: 6px;
+    border-radius: 5px;
 
-    background: #18181f;
+    background: #181818;
 
-    color: #b5b9ff;
+    color: #ddd;
 }
 
-/* =========================================================
-   GENERATED IMAGE
-   ========================================================= */
+.image-message {
+    display: flex;
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 12px;
+}
 
 .generated-image {
-    display: block;
+    width: min(
+        100%,
+        600px
+    );
 
-    width: min(100%, 700px);
+    border-radius: 17px;
 
-    max-height: 700px;
-
-    object-fit: contain;
-
-    margin-top: 12px;
-
-    border-radius: 18px;
-
-    border: 1px solid rgba(255,255,255,0.12);
-
-    background: #050505;
+    border: 1px solid #292929;
 }
 
 .download-image {
-    display: inline-block;
+    padding: 9px 13px;
 
-    margin-top: 10px;
-
-    padding: 8px 13px;
-
+    border: 1px solid #292929;
     border-radius: 10px;
 
-    background: #17171d;
-
-    border: 1px solid var(--border);
-
-    color: white;
+    color: #ddd;
 
     text-decoration: none;
 
-    font-size: 12px;
+    font-size: 13px;
 }
 
-/* =========================================================
+
+/* =========================
    TYPING
-   ========================================================= */
+========================= */
 
 .typing {
     display: flex;
+
+    align-items: center;
+
     gap: 5px;
 
-    padding-top: 10px;
+    padding: 14px;
 }
 
 .typing span {
-    width: 6px;
-    height: 6px;
+    width: 7px;
+    height: 7px;
 
     border-radius: 50%;
 
-    background: #aaa;
+    background: #888;
 
-    animation: typing 1.2s infinite;
+    animation:
+        typing 1.2s infinite;
 }
 
 .typing span:nth-child(2) {
-    animation-delay: .15s;
+    animation-delay: 0.15s;
 }
 
 .typing span:nth-child(3) {
-    animation-delay: .30s;
+    animation-delay: 0.3s;
 }
 
 @keyframes typing {
@@ -656,7 +650,7 @@ button {
     60%,
     100% {
         transform: translateY(0);
-        opacity: .35;
+        opacity: 0.35;
     }
 
     30% {
@@ -665,267 +659,167 @@ button {
     }
 }
 
-/* =========================================================
-   BOTTOM COMPOSER
-   ========================================================= */
+
+/* =========================
+   COMPOSER
+========================= */
 
 .composer-wrapper {
-    position: fixed;
+    position: absolute;
 
-    left: 270px;
-    right: 0;
-    bottom: 0;
+    left: 50%;
+    bottom: 15px;
 
-    padding:
-        15px
-        18px
-        18px;
+    width: min(
+        850px,
+        calc(100% - 30px)
+    );
 
-    background:
-        linear-gradient(
-            transparent,
-            #000 35%
-        );
+    transform: translateX(-50%);
 
-    z-index: 30;
+    z-index: 10;
 }
-
-/* Glass capsule */
 
 .composer {
-    width: min(850px, 100%);
-
-    min-height: 62px;
-
-    margin: 0 auto;
+    min-height: 60px;
 
     display: flex;
-
     align-items: center;
 
-    gap: 7px;
+    gap: 8px;
 
-    padding: 7px 8px;
+    padding: 8px 9px;
 
-    border-radius: 34px;
+    border: 1px solid #303030;
+    border-radius: 25px;
 
     background:
-        linear-gradient(
-            135deg,
-            rgba(255,255,255,0.12),
-            rgba(255,255,255,0.055)
+        rgba(
+            19,
+            19,
+            19,
+            0.88
         );
 
-    border: 1px solid rgba(255,255,255,0.22);
+    backdrop-filter: blur(25px);
 
     box-shadow:
-        inset 0 1px 1px rgba(255,255,255,0.18),
-        0 15px 45px rgba(0,0,0,0.55);
-
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
+        0 15px 50px
+        rgba(0, 0, 0, 0.55);
 }
-
-/* =========================================================
-   ATTACHMENT BUTTON
-   ========================================================= */
-
-.attach-btn {
-    width: 46px;
-    height: 46px;
-
-    flex-shrink: 0;
-
-    border-radius: 50%;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background:
-        rgba(255,255,255,0.035);
-
-    border: 1px solid rgba(255,255,255,0.25);
-
-    color: #d6d6dd;
-
-    font-size: 28px;
-
-    font-weight: 300;
-
-    transition: .2s;
-}
-
-.attach-btn:hover {
-    background: rgba(255,255,255,0.12);
-}
-
-/* =========================================================
-   TEXT INPUT
-   ========================================================= */
 
 .composer textarea {
     flex: 1;
 
     min-width: 0;
 
-    min-height: 45px;
     max-height: 130px;
+
+    padding: 10px 5px;
 
     resize: none;
 
-    padding:
-        11px
-        5px;
+    border: none;
+    outline: none;
 
     background: transparent;
+    color: #fff;
 
-    border: 0;
-
-    outline: 0;
-
-    color: white;
-
-    font-size: 17px;
-
-    line-height: 23px;
+    font-size: 15px;
 }
 
 .composer textarea::placeholder {
-    color: #9b9ba4;
-
-    opacity: 1;
+    color: #666;
 }
 
-/* =========================================================
-   IMAGE BUTTON
-   ========================================================= */
-
-.image-btn {
-    width: 45px;
-    height: 45px;
-
-    flex-shrink: 0;
-
-    border-radius: 50%;
-
-    background: rgba(255,255,255,0.05);
-
-    border: 1px solid rgba(255,255,255,0.18);
-
-    color: #d8d8df;
-
-    font-size: 18px;
-}
-
-.image-btn:hover {
-    background: rgba(255,255,255,0.12);
-}
-
-/* =========================================================
-   SEND BUTTON
-   ========================================================= */
-
+.attach-btn,
+.image-btn,
 .send-btn {
-    width: 45px;
-    height: 45px;
+    width: 42px;
+    height: 42px;
 
     flex-shrink: 0;
-
-    border-radius: 50%;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    background:
-        linear-gradient(
-            135deg,
-            #5665ff,
-            #7568ff
-        );
+    border: none;
+    border-radius: 50%;
 
-    color: white;
+    background: transparent;
+    color: #aaa;
 
     font-size: 20px;
+}
 
-    box-shadow:
-        0 5px 20px rgba(70,80,255,.3);
+.attach-btn:hover,
+.image-btn:hover {
+    background: #222;
+    color: #fff;
+}
+
+.send-btn {
+    background: #fff;
+    color: #000;
+
+    font-size: 17px;
+    font-weight: 900;
 }
 
 .send-btn:hover {
     transform: scale(1.04);
 }
 
-/* =========================================================
-   NOTE
-   ========================================================= */
+.send-btn:disabled,
+.image-btn:disabled {
+    cursor: not-allowed;
+}
 
 .composer-note {
-    width: min(850px, 100%);
-
-    margin: 8px auto 0;
+    margin-top: 8px;
 
     text-align: center;
 
-    color: #575760;
+    color: #555;
 
-    font-size: 9px;
+    font-size: 10px;
 }
 
-/* =========================================================
-   ATTACHMENT PREVIEW
-   ========================================================= */
-
 .attachment-preview {
-    width: min(850px, 100%);
-
-    margin:
-        0 auto
-        7px;
+    margin-bottom: 8px;
 }
 
 .attachment-item {
-    display: inline-flex;
-
+    display: flex;
     align-items: center;
+    justify-content: space-between;
 
-    gap: 8px;
+    padding: 9px 12px;
 
-    padding:
-        8px
-        11px;
-
+    border: 1px solid #292929;
     border-radius: 13px;
 
-    background:
-        rgba(25,25,30,.9);
+    background: #101010;
 
-    border:
-        1px solid
-        rgba(255,255,255,.15);
-
-    color: #ddd;
+    color: #aaa;
 
     font-size: 12px;
-
-    backdrop-filter: blur(15px);
 }
 
 .attachment-item button {
-    width: 20px;
-    height: 20px;
+    border: none;
 
-    border-radius: 50%;
+    background: transparent;
+    color: #aaa;
 
-    background: #303038;
-
-    color: white;
+    font-size: 20px;
 }
 
-/* =========================================================
+
+/* =========================
    MODALS
-   ========================================================= */
+========================= */
 
 .modal {
     position: fixed;
@@ -935,83 +829,114 @@ button {
     z-index: 100;
 
     display: flex;
-
     align-items: center;
     justify-content: center;
 
     padding: 20px;
 
-    background: rgba(0,0,0,.72);
+    background:
+        rgba(
+            0,
+            0,
+            0,
+            0.75
+        );
 
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(10px);
 }
 
 .modal-card {
-    width: min(430px, 100%);
+    position: relative;
+
+    width: 100%;
+    max-width: 430px;
 
     padding: 28px;
 
-    border-radius: 22px;
+    border: 1px solid #292929;
+    border-radius: 24px;
 
-    background: #111116;
-
-    border: 1px solid var(--border);
-
-    position: relative;
+    background: #101010;
 
     box-shadow:
-        0 30px 100px rgba(0,0,0,.7);
+        0 30px 80px
+        rgba(0, 0, 0, 0.7);
 }
 
 .close-modal {
     position: absolute;
 
     top: 13px;
-    right: 13px;
+    right: 15px;
 
-    width: 34px;
-    height: 34px;
+    border: none;
 
-    border-radius: 10px;
+    background: transparent;
+    color: #888;
 
-    background: #222229;
-
-    color: white;
-
-    font-size: 20px;
+    font-size: 26px;
 }
 
-.profile-info p,
-.setting-row {
-    display: flex;
+.profile-avatar {
+    width: 60px;
+    height: 60px;
 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 20px auto;
+
+    border-radius: 18px;
+
+    background: #fff;
+    color: #000;
+
+    font-weight: 900;
+}
+
+.profile-info p {
+    display: flex;
     justify-content: space-between;
 
-    gap: 20px;
+    gap: 15px;
 
     padding: 13px 0;
 
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid #222;
 
-    color: #aaaab3;
+    color: #999;
 }
 
-.profile-info strong,
+.profile-info span {
+    color: #fff;
+
+    text-align: right;
+}
+
+.setting-row {
+    display: flex;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 15px 0;
+
+    border-bottom: 1px solid #222;
+
+    color: #999;
+}
+
 .setting-row strong {
-    color: white;
+    color: #fff;
 }
 
-/* =========================================================
-   MOBILE — SCREENSHOT STYLE
-   ========================================================= */
+
+/* =========================
+   MOBILE
+========================= */
 
 @media (max-width: 800px) {
-
-    html,
-    body {
-        width: 100%;
-        height: 100%;
-    }
 
     .sidebar {
         display: none;
@@ -1019,214 +944,115 @@ button {
 
     .main {
         width: 100%;
-        height: 100vh;
     }
 
     .topbar {
-        height: 58px;
+        height: 62px;
 
-        padding:
-            0
-            15px;
-
-        border-bottom: 0;
-
-        background: transparent;
+        padding: 0 15px;
     }
 
     .topbar h2 {
-        font-size: 17px;
-    }
-
-    .status {
-        display: none;
-    }
-
-    .plan-badge {
-        font-size: 10px;
-    }
-
-    .chat-area {
-        height: 100vh;
-
-        padding:
-            20px
-            12px
-            150px;
-    }
-
-    .welcome {
-        margin-top: 27vh;
-    }
-
-    .welcome-logo {
-        display: none;
-    }
-
-    .welcome h1 {
-        font-size: 36px;
-
-        line-height: 1.2;
-
-        letter-spacing: -1.5px;
-
-        font-weight: 450;
-
-        max-width: 340px;
-
-        margin:
-            0 auto
-            10px;
-    }
-
-    .welcome p {
-        display: none;
-    }
-
-    .suggestions {
-        display: none;
-    }
-
-    /* Bottom glass bar */
-
-    .composer-wrapper {
-        left: 0;
-        right: 0;
-
-        bottom: 0;
-
-        padding:
-            10px
-            12px
-            18px;
-
-        background:
-            linear-gradient(
-                transparent,
-                rgba(0,0,10,.95) 40%
-            );
-    }
-
-    .composer {
-        min-height: 60px;
-
-        border-radius: 32px;
-
-        padding:
-            6px
-            7px;
-
-        gap: 5px;
-
-        background:
-            linear-gradient(
-                135deg,
-                rgba(170,190,210,.16),
-                rgba(80,90,110,.10)
-            );
-
-        border-color:
-            rgba(255,255,255,.25);
-
-        box-shadow:
-            inset 0 1px 2px
-            rgba(255,255,255,.22),
-            0 8px 35px
-            rgba(0,0,0,.65);
-    }
-
-    .attach-btn {
-        width: 45px;
-        height: 45px;
-
-        font-size: 27px;
-    }
-
-    .composer textarea {
-        font-size: 16px;
-
-        min-height: 43px;
-
-        padding:
-            10px
-            3px;
-    }
-
-    .image-btn {
-        width: 43px;
-        height: 43px;
-
-        font-size: 17px;
-    }
-
-    .send-btn {
-        width: 43px;
-        height: 43px;
-
-        font-size: 18px;
-    }
-
-    .composer-note {
-        display: none;
-    }
-
-    .attachment-preview {
-        padding-left: 3px;
-    }
-
-    .message {
-        width: 100%;
-
-        padding:
-            0
-            4px;
-
-        gap: 9px;
-    }
-
-    .message-content {
-        max-width: calc(100vw - 65px);
-    }
-
-    .generated-image {
-        max-height: 500px;
-
-        border-radius: 14px;
-    }
-
-    .user-message .message-content {
         font-size: 14px;
     }
 
-    .ai-message .message-content {
-        font-size: 15px;
+    .chat-area {
+        padding:
+            25px 12px 145px;
     }
-}
 
-/* =========================================================
-   VERY SMALL PHONES
-   ========================================================= */
+    .welcome {
+        min-height: 75%;
+    }
 
-@media (max-width: 390px) {
+    .welcome h1 {
+        font-size: 27px;
+    }
+
+    .welcome-logo {
+        width: 58px;
+        height: 58px;
+
+        border-radius: 19px;
+    }
+
+    .suggestions {
+        width: 100%;
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 8px;
+
+        margin-top: 25px;
+    }
+
+    .suggestions button {
+        min-height: 58px;
+
+        font-size: 12px;
+    }
+
+    .composer-wrapper {
+        width: calc(
+            100% - 18px
+        );
+
+        bottom: 9px;
+    }
 
     .composer {
-        min-height: 57px;
+        min-height: 56px;
 
-        padding: 5px;
+        border-radius: 23px;
     }
 
     .attach-btn,
     .image-btn,
     .send-btn {
-        width: 40px;
-        height: 40px;
+        width: 38px;
+        height: 38px;
     }
 
     .composer textarea {
-        font-size: 15px;
+        font-size: 14px;
     }
 
-    .welcome h1 {
-        font-size: 31px;
+    .composer-note {
+        font-size: 9px;
     }
+
+    .message {
+        gap: 8px;
+    }
+
+    .message-avatar {
+        width: 30px;
+        height: 30px;
+
+        font-size: 9px;
+    }
+
+}
+
+
+/* =========================
+   VERY SMALL PHONES
+========================= */
+
+@media (max-width: 420px) {
+
+    .auth-card {
+        padding: 30px 20px;
+    }
+
+    .suggestions {
+        grid-template-columns:
+            1fr;
+    }
+
+    .plan-badge {
+        display: none;
+    }
+
 }
