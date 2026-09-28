@@ -28,10 +28,6 @@
 
 {% if not logged_in %}
 
-<!-- =====================================================
-     LOGIN / REGISTER
-     ===================================================== -->
-
 <div class="auth-page">
 
     <div class="auth-card">
@@ -40,22 +36,15 @@
             04
         </div>
 
-        <h1>
-            Zero4 AI
-        </h1>
+        <h1>Zero4 AI</h1>
 
         <p class="auth-subtitle">
             Fast AI. Zero4 Flash.
         </p>
 
-
-        <!-- LOGIN -->
-
         <div id="loginBox">
 
-            <h2>
-                Welcome back
-            </h2>
+            <h2>Welcome back</h2>
 
             <input
                 id="loginEmail"
@@ -72,36 +61,27 @@
             >
 
             <button
+                type="button"
                 onclick="login()"
             >
                 Login
             </button>
 
             <p class="switch-text">
-
                 Don't have an account?
-
-                <span
-                    onclick="showRegister()"
-                >
+                <span onclick="showRegister()">
                     Create one
                 </span>
-
             </p>
 
         </div>
-
-
-        <!-- REGISTER -->
 
         <div
             id="registerBox"
             class="hidden"
         >
 
-            <h2>
-                Create account
-            </h2>
+            <h2>Create account</h2>
 
             <input
                 id="registerName"
@@ -125,25 +105,20 @@
             >
 
             <button
+                type="button"
                 onclick="registerUser()"
             >
                 Create Account
             </button>
 
             <p class="switch-text">
-
                 Already have an account?
-
-                <span
-                    onclick="showLogin()"
-                >
+                <span onclick="showLogin()">
                     Login
                 </span>
-
             </p>
 
         </div>
-
 
         <div id="authMessage"></div>
 
@@ -151,18 +126,9 @@
 
 </div>
 
-
 {% else %}
 
-
-<!-- =====================================================
-     MAIN ZERO4 APP
-     ===================================================== -->
-
 <div class="app">
-
-
-    <!-- SIDEBAR -->
 
     <aside class="sidebar">
 
@@ -173,27 +139,19 @@
             </div>
 
             <div>
-
-                <strong>
-                    Zero4
-                </strong>
-
-                <span>
-                    FLASH
-                </span>
-
+                <strong>Zero4</strong>
+                <span>FLASH</span>
             </div>
 
         </div>
 
-
         <button
             class="new-chat"
+            type="button"
             onclick="newChat()"
         >
             ＋ New Chat
         </button>
-
 
         <div class="sidebar-section">
 
@@ -211,16 +169,17 @@
 
         </div>
 
-
         <div class="sidebar-bottom">
 
             <button
+                type="button"
                 onclick="showProfile()"
             >
                 👤 Profile
             </button>
 
             <button
+                type="button"
                 onclick="showSettings()"
             >
                 ⚙️ Settings
@@ -234,15 +193,7 @@
 
     </aside>
 
-
-    <!-- =================================================
-         MAIN
-         ================================================= -->
-
     <main class="main">
-
-
-        <!-- TOP BAR -->
 
         <header class="topbar">
 
@@ -263,9 +214,6 @@
             </div>
 
         </header>
-
-
-        <!-- CHAT -->
 
         <section
             id="chatArea"
@@ -289,28 +237,31 @@
                     Ask Zero4 AI Flash anything.
                 </p>
 
-
                 <div class="suggestions">
 
                     <button
+                        type="button"
                         onclick="useSuggestion('Explain Python in simple Hinglish')"
                     >
                         🐍 Explain Python
                     </button>
 
                     <button
+                        type="button"
                         onclick="useSuggestion('Solve 25 × 16 step by step')"
                     >
                         🧮 Solve Maths
                     </button>
 
                     <button
+                        type="button"
                         onclick="useImageSuggestion()"
                     >
                         🖼️ Generate Image
                     </button>
 
                     <button
+                        type="button"
                         onclick="useSuggestion('Write a Python calculator program')"
                     >
                         💻 Write Code
@@ -322,36 +273,23 @@
 
         </section>
 
-
-        <!-- =================================================
-             COMPOSER
-             ================================================= -->
-
         <div class="composer-wrapper">
-
-
-            <!-- ATTACHMENT PREVIEW -->
 
             <div
                 id="attachmentPreview"
                 class="attachment-preview hidden"
             ></div>
 
-
             <div class="composer">
-
-
-                <!-- ATTACHMENT -->
 
                 <button
                     class="attach-btn"
+                    type="button"
                     onclick="openFilePicker()"
                     title="Attach image or file"
-                    aria-label="Attach image or file"
                 >
                     +
                 </button>
-
 
                 <input
                     id="fileInput"
@@ -361,9 +299,6 @@
                     onchange="handleFileSelected(event)"
                 >
 
-
-                <!-- MESSAGE -->
-
                 <textarea
                     id="messageInput"
                     rows="1"
@@ -371,34 +306,27 @@
                     onkeydown="handleEnter(event)"
                 ></textarea>
 
-
-                <!-- IMAGE GENERATION -->
-
                 <button
                     id="imageButton"
                     class="image-btn"
+                    type="button"
                     onclick="generateImage()"
                     title="Generate image"
-                    aria-label="Generate image"
                 >
                     🖼️
                 </button>
 
-
-                <!-- SEND -->
-
                 <button
                     id="sendButton"
                     class="send-btn"
+                    type="button"
                     onclick="sendMessage()"
                     title="Send"
-                    aria-label="Send"
                 >
                     ➤
                 </button>
 
             </div>
-
 
             <p class="composer-note">
                 Zero4 AI can make mistakes. Check important information.
@@ -411,10 +339,6 @@
 </div>
 
 
-<!-- =====================================================
-     PROFILE MODAL
-     ===================================================== -->
-
 <div
     id="profileModal"
     class="modal hidden"
@@ -424,14 +348,13 @@
 
         <button
             class="close-modal"
+            type="button"
             onclick="closeModals()"
         >
             ×
         </button>
 
-        <h2>
-            Profile
-        </h2>
+        <h2>Profile</h2>
 
         <div class="profile-avatar">
             04
@@ -446,10 +369,6 @@
 </div>
 
 
-<!-- =====================================================
-     SETTINGS MODAL
-     ===================================================== -->
-
 <div
     id="settingsModal"
     class="modal hidden"
@@ -459,77 +378,45 @@
 
         <button
             class="close-modal"
+            type="button"
             onclick="closeModals()"
         >
             ×
         </button>
 
-        <h2>
-            Settings
-        </h2>
-
+        <h2>Settings</h2>
 
         <div class="setting-row">
-
-            <span>
-                AI Engine
-            </span>
-
-            <strong>
-                Gemini Flash
-            </strong>
-
+            <span>AI Engine</span>
+            <strong>Gemini Flash</strong>
         </div>
 
-
         <div class="setting-row">
-
-            <span>
-                Image Generation
-            </span>
-
-            <strong>
-                Gemini
-            </strong>
-
+            <span>Image Generation</span>
+            <strong>Gemini</strong>
         </div>
 
-
         <div class="setting-row">
-
-            <span>
-                Attachment Limit
-            </span>
-
-            <strong>
-                200 MB
-            </strong>
-
+            <span>Attachment Limit</span>
+            <strong>200 MB</strong>
         </div>
 
-
         <div class="setting-row">
-
-            <span>
-                Plan
-            </span>
-
-            <strong>
-                Free
-            </strong>
-
+            <span>Plan</span>
+            <strong>Free</strong>
         </div>
 
     </div>
 
 </div>
 
+{% endif %}
+
+<!-- IMPORTANT: outside the if/else -->
 
 <script
     src="{{ url_for('static', filename='script.js') }}"
 ></script>
 
-
 </body>
-
 </html>
