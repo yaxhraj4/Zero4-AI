@@ -1,1304 +1,542 @@
-/* =========================================================
-   ZERO4 AI FLASH
-   Main JavaScript
-   ========================================================= */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
 
-let selectedFile = null;
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
+    <meta
+        name="theme-color"
+        content="#000000"
+    >
 
-/* =========================================================
-   AUTH
-   ========================================================= */
+    <title>Zero4 AI Flash</title>
 
-function showRegister() {
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+</head>
 
-    document
-        .getElementById("loginBox")
-        .classList.add("hidden");
+<body>
 
-    document
-        .getElementById("registerBox")
-        .classList.remove("hidden");
+{% if not logged_in %}
 
-    document
-        .getElementById("authMessage")
-        .innerText = "";
-}
+<!-- =========================
+     LOGIN / REGISTER PAGE
+========================= -->
 
+<div class="auth-page">
 
-function showLogin() {
+    <div class="auth-card">
 
-    document
-        .getElementById("registerBox")
-        .classList.add("hidden");
-
-    document
-        .getElementById("loginBox")
-        .classList.remove("hidden");
-
-    document
-        .getElementById("authMessage")
-        .innerText = "";
-}
-
-
-function showAuthMessage(message) {
-
-    document
-        .getElementById("authMessage")
-        .innerText = message;
-}
-
-
-/* =========================================================
-   LOGIN
-   ========================================================= */
-
-async function login() {
-
-    const email =
-        document
-            .getElementById("loginEmail")
-            .value
-            .trim();
-
-    const password =
-        document
-            .getElementById("loginPassword")
-            .value;
-
-
-    if (!email || !password) {
-
-        showAuthMessage(
-            "Please enter email and password."
-        );
-
-        return;
-    }
-
-
-    try {
-
-        const response = await fetch(
-            "/login",
-            {
-                method: "POST",
-
-                headers: {
-                    "Content-Type":
-                        "application/json"
-                },
-
-                body: JSON.stringify({
-                    email: email,
-                    password: password
-                })
-            }
-        );
-
-
-        const data =
-            await response.json();
-
-
-        if (!data.success) {
-
-            showAuthMessage(
-                data.error ||
-                "Login failed."
-            );
-
-            return;
-        }
-
-
-        window.location.reload();
-
-    } catch (error) {
-
-        showAuthMessage(
-            "Network error. Please try again."
-        );
-    }
-}
-
-
-/* =========================================================
-   REGISTER
-   ========================================================= */
-
-async function registerUser() {
-
-    const name =
-        document
-            .getElementById("registerName")
-            .value
-            .trim();
-
-    const email =
-        document
-            .getElementById("registerEmail")
-            .value
-            .trim();
-
-    const password =
-        document
-            .getElementById("registerPassword")
-            .value;
-
-
-    if (!name || !email || !password) {
-
-        showAuthMessage(
-            "Please fill all fields."
-        );
-
-        return;
-    }
-
-
-    try {
-
-        const response = await fetch(
-            "/register",
-            {
-                method: "POST",
-
-                headers: {
-                    "Content-Type":
-                        "application/json"
-                },
-
-                body: JSON.stringify({
-                    name: name,
-                    email: email,
-                    password: password
-                })
-            }
-        );
-
-
-        const data =
-            await response.json();
-
-
-        if (!data.success) {
-
-            showAuthMessage(
-                data.error ||
-                "Registration failed."
-            );
-
-            return;
-        }
-
-
-        window.location.reload();
-
-    } catch (error) {
-
-        showAuthMessage(
-            "Network error. Please try again."
-        );
-    }
-}
-
-
-/* =========================================================
-   ENTER KEY
-   ========================================================= */
-
-function handleEnter(event) {
-
-    if (
-        event.key === "Enter" &&
-        !event.shiftKey
-    ) {
-
-        event.preventDefault();
-
-        sendMessage();
-    }
-}
-
-
-/* =========================================================
-   SUGGESTIONS
-   ========================================================= */
-
-function useSuggestion(text) {
-
-    const input =
-        document.getElementById(
-            "messageInput"
-        );
-
-    input.value = text;
-
-    input.focus();
-}
-
-
-function useImageSuggestion() {
-
-    const input =
-        document.getElementById(
-            "messageInput"
-        );
-
-    input.value =
-        "Create a cinematic futuristic city at night with neon lights, ultra detailed.";
-
-    input.focus();
-}
-
-
-/* =========================================================
-   CHAT AREA
-   ========================================================= */
-
-function getChatArea() {
-
-    return document.getElementById(
-        "chatArea"
-    );
-}
-
-
-function removeWelcome() {
-
-    const welcome =
-        document.getElementById(
-            "welcome"
-        );
-
-    if (welcome) {
-        welcome.remove();
-    }
-}
-
-
-/* =========================================================
-   USER MESSAGE
-   ========================================================= */
-
-function addUserMessage(text) {
-
-    removeWelcome();
-
-    const chatArea =
-        getChatArea();
-
-
-    const message =
-        document.createElement(
-            "div"
-        );
-
-    message.className =
-        "message user-message";
-
-
-    message.innerHTML = `
-        <div class="message-avatar">
-            You
-        </div>
-
-        <div class="message-content"></div>
-    `;
-
-
-    message
-        .querySelector(
-            ".message-content"
-        )
-        .textContent = text;
-
-
-    chatArea.appendChild(
-        message
-    );
-
-
-    scrollToBottom();
-}
-
-
-/* =========================================================
-   AI MESSAGE
-   ========================================================= */
-
-function addAIMessage(text) {
-
-    const chatArea =
-        getChatArea();
-
-
-    const message =
-        document.createElement(
-            "div"
-        );
-
-    message.className =
-        "message ai-message";
-
-
-    message.innerHTML = `
-        <div class="message-avatar ai-avatar">
+        <div class="logo-big">
             04
         </div>
 
-        <div class="message-content"></div>
-    `;
+        <h1>
+            Zero4 AI
+        </h1>
+
+        <p class="auth-subtitle">
+            Fast AI. Zero4 Flash.
+        </p>
 
 
-    message
-        .querySelector(
-            ".message-content"
-        )
-        .innerHTML =
-            formatAIText(text);
+        <!-- LOGIN -->
 
+        <div id="loginBox">
 
-    chatArea.appendChild(
-        message
-    );
+            <h2>
+                Welcome back
+            </h2>
 
-
-    scrollToBottom();
-}
-
-
-/* =========================================================
-   IMAGE MESSAGE
-   ========================================================= */
-
-function addImageMessage(
-    imageData
-) {
-
-    removeWelcome();
-
-
-    const chatArea =
-        getChatArea();
-
-
-    const message =
-        document.createElement(
-            "div"
-        );
-
-    message.className =
-        "message ai-message";
-
-
-    message.innerHTML = `
-        <div class="message-avatar ai-avatar">
-            04
-        </div>
-
-        <div class="message-content image-message">
-
-            <p>
-                🖼️ Here's your generated image:
-            </p>
-
-            <img
-                src="${imageData}"
-                class="generated-image"
-                alt="Generated image"
+            <input
+                id="loginEmail"
+                type="email"
+                placeholder="Email"
+                autocomplete="email"
             >
 
-            <a
-                href="${imageData}"
-                download="zero4-generated-image.png"
-                class="download-image"
+            <input
+                id="loginPassword"
+                type="password"
+                placeholder="Password"
+                autocomplete="current-password"
             >
-                ⬇️ Save Image
-            </a>
-
-        </div>
-    `;
-
-
-    chatArea.appendChild(
-        message
-    );
-
-
-    scrollToBottom();
-}
-
-
-/* =========================================================
-   TYPING
-   ========================================================= */
-
-function showTyping() {
-
-    removeTyping();
-
-
-    const chatArea =
-        getChatArea();
-
-
-    const typing =
-        document.createElement(
-            "div"
-        );
-
-    typing.id =
-        "typingIndicator";
-
-    typing.className =
-        "message ai-message";
-
-
-    typing.innerHTML = `
-        <div class="message-avatar ai-avatar">
-            04
-        </div>
-
-        <div class="typing">
-
-            <span></span>
-            <span></span>
-            <span></span>
-
-        </div>
-    `;
-
-
-    chatArea.appendChild(
-        typing
-    );
-
-
-    scrollToBottom();
-}
-
-
-function removeTyping() {
-
-    const typing =
-        document.getElementById(
-            "typingIndicator"
-        );
-
-    if (typing) {
-        typing.remove();
-    }
-}
-
-
-/* =========================================================
-   CHAT
-   ========================================================= */
-
-async function sendMessage() {
-
-    const input =
-        document.getElementById(
-            "messageInput"
-        );
-
-
-    const text =
-        input.value.trim();
-
-
-    if (!text && !selectedFile) {
-        return;
-    }
-
-
-    /* Attachment */
-
-    if (selectedFile) {
-
-        await sendAttachment(
-            text
-        );
-
-        return;
-    }
-
-
-    addUserMessage(
-        text
-    );
-
-
-    input.value = "";
-
-
-    showTyping();
-
-    setSendingState(
-        true
-    );
-
-
-    try {
-
-        const response =
-            await fetch(
-                "/chat",
-                {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body: JSON.stringify({
-                        message: text
-                    })
-                }
-            );
-
-
-        const data =
-            await response.json();
-
-
-        removeTyping();
-
-
-        if (!data.success) {
-
-            addAIMessage(
-                "⚠️ " +
-                (
-                    data.error ||
-                    "Something went wrong."
-                )
-            );
-
-            return;
-        }
-
-
-        addAIMessage(
-            data.answer
-        );
-
-    } catch (error) {
-
-        removeTyping();
-
-        addAIMessage(
-            "⚠️ Network error. Please try again."
-        );
-
-    } finally {
-
-        setSendingState(
-            false
-        );
-    }
-}
-
-
-/* =========================================================
-   IMAGE GENERATION
-   ========================================================= */
-
-async function generateImage() {
-
-    const input =
-        document.getElementById(
-            "messageInput"
-        );
-
-
-    const prompt =
-        input.value.trim();
-
-
-    if (!prompt) {
-
-        input.focus();
-
-        input.placeholder =
-            "Describe the image you want...";
-
-        return;
-    }
-
-
-    addUserMessage(
-        "🖼️ Generate image: " +
-        prompt
-    );
-
-
-    input.value = "";
-
-
-    showTyping();
-
-    setSendingState(
-        true
-    );
-
-
-    try {
-
-        const response =
-            await fetch(
-                "/generate-image",
-                {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body: JSON.stringify({
-                        prompt: prompt
-                    })
-                }
-            );
-
-
-        const data =
-            await response.json();
-
-
-        removeTyping();
-
-
-        if (!data.success) {
-
-            addAIMessage(
-                "⚠️ " +
-                (
-                    data.error ||
-                    "Image generation failed."
-                )
-            );
-
-            return;
-        }
-
-
-        addImageMessage(
-            data.image
-        );
-
-    } catch (error) {
-
-        removeTyping();
-
-        addAIMessage(
-            "⚠️ Could not connect to image generation."
-        );
-
-    } finally {
-
-        setSendingState(
-            false
-        );
-    }
-}
-
-
-/* =========================================================
-   FILE PICKER
-   ========================================================= */
-
-function openFilePicker() {
-
-    document
-        .getElementById(
-            "fileInput"
-        )
-        .click();
-}
-
-
-/* =========================================================
-   FILE SELECTED
-   ========================================================= */
-
-function handleFileSelected(
-    event
-) {
-
-    const file =
-        event.target.files[0];
-
-
-    if (!file) {
-        return;
-    }
-
-
-    /* 200 MB */
-
-    const maxSize =
-        200 * 1024 * 1024;
-
-
-    if (file.size > maxSize) {
-
-        alert(
-            "Maximum file size is 200 MB."
-        );
-
-        event.target.value = "";
-
-        return;
-    }
-
-
-    selectedFile = file;
-
-
-    const preview =
-        document.getElementById(
-            "attachmentPreview"
-        );
-
-
-    preview.classList.remove(
-        "hidden"
-    );
-
-
-    preview.innerHTML = `
-
-        <div class="attachment-item">
-
-            <span>
-                📎
-                ${escapeHTML(file.name)}
-            </span>
 
             <button
-                onclick="removeAttachment()"
+                type="button"
+                onclick="login()"
             >
-                ×
+                Login
             </button>
+
+            <p class="switch-text">
+                Don't have an account?
+
+                <span onclick="showRegister()">
+                    Create one
+                </span>
+            </p>
 
         </div>
 
-    `;
-}
 
-
-/* =========================================================
-   REMOVE ATTACHMENT
-   ========================================================= */
-
-function removeAttachment() {
-
-    selectedFile = null;
-
-
-    document
-        .getElementById(
-            "fileInput"
-        )
-        .value = "";
-
-
-    const preview =
-        document.getElementById(
-            "attachmentPreview"
-        );
-
-
-    preview.innerHTML = "";
-
-    preview.classList.add(
-        "hidden"
-    );
-}
-
-
-/* =========================================================
-   SEND ATTACHMENT
-   ========================================================= */
-
-async function sendAttachment(
-    message
-) {
-
-    if (!selectedFile) {
-        return;
-    }
-
-
-    const fileName =
-        selectedFile.name;
-
-
-    addUserMessage(
-        "📎 " +
-        fileName +
-        (
-            message
-                ? "\n" + message
-                : ""
-        )
-    );
-
-
-    showTyping();
-
-    setSendingState(
-        true
-    );
-
-
-    const formData =
-        new FormData();
-
-
-    formData.append(
-        "file",
-        selectedFile
-    );
-
-
-    formData.append(
-        "message",
-        message || ""
-    );
-
-
-    try {
-
-        const response =
-            await fetch(
-                "/analyze-file",
-                {
-                    method: "POST",
-                    body: formData
-                }
-            );
-
-
-        const data =
-            await response.json();
-
-
-        removeTyping();
-
-
-        if (!data.success) {
-
-            addAIMessage(
-                "⚠️ " +
-                (
-                    data.error ||
-                    "Could not analyze the attachment."
-                )
-            );
-
-            return;
-        }
-
-
-        addAIMessage(
-            data.answer
-        );
-
-    } catch (error) {
-
-        removeTyping();
-
-        addAIMessage(
-            "⚠️ Could not upload the attachment."
-        );
-
-    } finally {
-
-        setSendingState(
-            false
-        );
-
-        removeAttachment();
-    }
-}
-
-
-/* =========================================================
-   BUTTON STATE
-   ========================================================= */
-
-function setSendingState(
-    isSending
-) {
-
-    const sendButton =
-        document.getElementById(
-            "sendButton"
-        );
-
-    const imageButton =
-        document.getElementById(
-            "imageButton"
-        );
-
-
-    if (!sendButton ||
-        !imageButton) {
-
-        return;
-    }
-
-
-    sendButton.disabled =
-        isSending;
-
-    imageButton.disabled =
-        isSending;
-
-
-    sendButton.style.opacity =
-        isSending
-            ? "0.5"
-            : "1";
-
-    imageButton.style.opacity =
-        isSending
-            ? "0.5"
-            : "1";
-}
-
-
-/* =========================================================
-   NEW CHAT
-   ========================================================= */
-
-function newChat() {
-
-    const chatArea =
-        getChatArea();
-
-
-    chatArea.innerHTML = `
+        <!-- REGISTER -->
 
         <div
-            id="welcome"
-            class="welcome"
+            id="registerBox"
+            class="hidden"
         >
 
-            <div class="welcome-logo">
+            <h2>
+                Create account
+            </h2>
+
+            <input
+                id="registerName"
+                type="text"
+                placeholder="Your name"
+                autocomplete="name"
+            >
+
+            <input
+                id="registerEmail"
+                type="email"
+                placeholder="Email"
+                autocomplete="email"
+            >
+
+            <input
+                id="registerPassword"
+                type="password"
+                placeholder="Password"
+                autocomplete="new-password"
+            >
+
+            <button
+                type="button"
+                onclick="registerUser()"
+            >
+                Create Account
+            </button>
+
+            <p class="switch-text">
+                Already have an account?
+
+                <span onclick="showLogin()">
+                    Login
+                </span>
+            </p>
+
+        </div>
+
+
+        <div id="authMessage"></div>
+
+    </div>
+
+</div>
+
+
+{% else %}
+
+<!-- =========================
+     MAIN ZERO4 APP
+========================= -->
+
+<div class="app">
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
                 04
             </div>
 
-            <h1>
-                What can I help you with?
-            </h1>
+            <div>
 
-            <p>
-                Ask Zero4 AI Flash anything.
-            </p>
+                <strong>
+                    Zero4
+                </strong>
 
-            <div class="suggestions">
-
-                <button
-                    onclick="useSuggestion('Explain Python in simple Hinglish')"
-                >
-                    🐍 Explain Python
-                </button>
-
-                <button
-                    onclick="useSuggestion('Solve 25 × 16 step by step')"
-                >
-                    🧮 Solve Maths
-                </button>
-
-                <button
-                    onclick="useImageSuggestion()"
-                >
-                    🖼️ Generate Image
-                </button>
-
-                <button
-                    onclick="useSuggestion('Write a Python calculator program')"
-                >
-                    💻 Write Code
-                </button>
+                <span>
+                    FLASH
+                </span>
 
             </div>
 
         </div>
 
-    `;
+
+        <button
+            class="new-chat"
+            type="button"
+            onclick="newChat()"
+        >
+            ＋ New Chat
+        </button>
 
 
-    removeAttachment();
-}
+        <div class="sidebar-section">
 
+            <p class="sidebar-title">
+                Recent
+            </p>
 
-/* =========================================================
-   PROFILE
-   ========================================================= */
+            <div id="recentChats">
 
-async function showProfile() {
-
-    const modal =
-        document.getElementById(
-            "profileModal"
-        );
-
-    const content =
-        document.getElementById(
-            "profileContent"
-        );
-
-
-    modal.classList.remove(
-        "hidden"
-    );
-
-
-    content.innerHTML =
-        "Loading...";
-
-
-    try {
-
-        const response =
-            await fetch(
-                "/me"
-            );
-
-
-        const data =
-            await response.json();
-
-
-        if (!data.success) {
-
-            content.innerHTML =
-                "Could not load profile.";
-
-            return;
-        }
-
-
-        const user =
-            data.user;
-
-
-        content.innerHTML = `
-
-            <div class="profile-info">
-
-                <p>
-
-                    <strong>
-                        Name
-                    </strong>
-
-                    <span>
-                        ${escapeHTML(user.name)}
-                    </span>
-
-                </p>
-
-
-                <p>
-
-                    <strong>
-                        Email
-                    </strong>
-
-                    <span>
-                        ${escapeHTML(user.email)}
-                    </span>
-
-                </p>
-
-
-                <p>
-
-                    <strong>
-                        Plan
-                    </strong>
-
-                    <span>
-                        ${escapeHTML(user.plan)}
-                    </span>
-
-                </p>
+                <div class="recent-item">
+                    New conversation
+                </div>
 
             </div>
 
-        `;
-
-    } catch (error) {
-
-        content.innerHTML =
-            "Could not load profile.";
-    }
-}
+        </div>
 
 
-/* =========================================================
-   SETTINGS
-   ========================================================= */
+        <div class="sidebar-bottom">
 
-function showSettings() {
+            <button
+                type="button"
+                onclick="showProfile()"
+            >
+                👤 Profile
+            </button>
 
-    document
-        .getElementById(
-            "settingsModal"
-        )
-        .classList.remove(
-            "hidden"
-        );
-}
+            <button
+                type="button"
+                onclick="showSettings()"
+            >
+                ⚙️ Settings
+            </button>
 
+            <a href="/logout">
+                🚪 Logout
+            </a>
 
-/* =========================================================
-   CLOSE MODALS
-   ========================================================= */
+        </div>
 
-function closeModals() {
-
-    document
-        .getElementById(
-            "profileModal"
-        )
-        .classList.add(
-            "hidden"
-        );
+    </aside>
 
 
-    document
-        .getElementById(
-            "settingsModal"
-        )
-        .classList.add(
-            "hidden"
-        );
-}
+    <!-- MAIN -->
+
+    <main class="main">
 
 
-window.addEventListener(
-    "click",
-    function(event) {
+        <!-- TOP BAR -->
 
-        const profileModal =
-            document.getElementById(
-                "profileModal"
-            );
+        <header class="topbar">
 
-        const settingsModal =
-            document.getElementById(
-                "settingsModal"
-            );
+            <div>
 
+                <h2>
+                    Zero4 AI Flash
+                </h2>
 
-        if (
-            event.target ===
-            profileModal
-        ) {
+                <span class="status">
+                    ● Gemini
+                </span>
 
-            profileModal.classList.add(
-                "hidden"
-            );
-        }
+            </div>
+
+            <div class="plan-badge">
+                Free
+            </div>
+
+        </header>
 
 
-        if (
-            event.target ===
-            settingsModal
-        ) {
+        <!-- CHAT AREA -->
 
-            settingsModal.classList.add(
-                "hidden"
-            );
-        }
+        <section
+            id="chatArea"
+            class="chat-area"
+        >
 
-    }
-);
+            <div
+                id="welcome"
+                class="welcome"
+            >
 
+                <div class="welcome-logo">
+                    04
+                </div>
 
-/* =========================================================
-   FORMAT AI TEXT
-   ========================================================= */
+                <h1>
+                    What can I help you with?
+                </h1>
 
-function formatAIText(text) {
-
-    let escaped =
-        escapeHTML(text);
-
-
-    escaped =
-        escaped.replace(
-            /\*\*(.*?)\*\*/g,
-            "<strong>$1</strong>"
-        );
+                <p>
+                    Ask Zero4 AI Flash anything.
+                </p>
 
 
-    escaped =
-        escaped.replace(
-            /`([^`]+)`/g,
-            "<code>$1</code>"
-        );
+                <div class="suggestions">
+
+                    <button
+                        type="button"
+                        onclick="useSuggestion('Explain Python in simple Hinglish')"
+                    >
+                        🐍 Explain Python
+                    </button>
 
 
-    escaped =
-        escaped.replace(
-            /\n/g,
-            "<br>"
-        );
+                    <button
+                        type="button"
+                        onclick="useSuggestion('Solve 25 × 16 step by step')"
+                    >
+                        🧮 Solve Maths
+                    </button>
 
 
-    return escaped;
-}
+                    <button
+                        type="button"
+                        onclick="useImageSuggestion()"
+                    >
+                        🖼️ Generate Image
+                    </button>
 
 
-/* =========================================================
-   ESCAPE HTML
-   ========================================================= */
+                    <button
+                        type="button"
+                        onclick="useSuggestion('Write a Python calculator program')"
+                    >
+                        💻 Write Code
+                    </button>
 
-function escapeHTML(text) {
+                </div>
 
-    const div =
-        document.createElement(
-            "div"
-        );
+            </div>
 
-
-    div.textContent =
-        text;
+        </section>
 
 
-    return div.innerHTML;
-}
+        <!-- COMPOSER -->
+
+        <div class="composer-wrapper">
 
 
-/* =========================================================
-   SCROLL
-   ========================================================= */
-
-function scrollToBottom() {
-
-    const chatArea =
-        getChatArea();
+            <div
+                id="attachmentPreview"
+                class="attachment-preview hidden"
+            ></div>
 
 
-    setTimeout(
-        function() {
+            <div class="composer">
 
-            chatArea.scrollTop =
-                chatArea.scrollHeight;
 
-        },
-        50
-    );
-}
+                <!-- ATTACH -->
+
+                <button
+                    class="attach-btn"
+                    type="button"
+                    onclick="openFilePicker()"
+                    title="Attach image or file"
+                    aria-label="Attach image or file"
+                >
+                    +
+                </button>
+
+
+                <input
+                    id="fileInput"
+                    type="file"
+                    accept="image/*,.txt,.csv,.json,.pdf"
+                    hidden
+                    onchange="handleFileSelected(event)"
+                >
+
+
+                <!-- MESSAGE -->
+
+                <textarea
+                    id="messageInput"
+                    rows="1"
+                    placeholder="Ask Zero4 AI"
+                    onkeydown="handleEnter(event)"
+                ></textarea>
+
+
+                <!-- IMAGE -->
+
+                <button
+                    id="imageButton"
+                    class="image-btn"
+                    type="button"
+                    onclick="generateImage()"
+                    title="Generate image"
+                    aria-label="Generate image"
+                >
+                    🖼️
+                </button>
+
+
+                <!-- SEND -->
+
+                <button
+                    id="sendButton"
+                    class="send-btn"
+                    type="button"
+                    onclick="sendMessage()"
+                    title="Send"
+                    aria-label="Send"
+                >
+                    ➤
+                </button>
+
+            </div>
+
+
+            <p class="composer-note">
+                Zero4 AI can make mistakes. Check important information.
+            </p>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- =========================
+     PROFILE MODAL
+========================= -->
+
+<div
+    id="profileModal"
+    class="modal hidden"
+>
+
+    <div class="modal-card">
+
+        <button
+            class="close-modal"
+            type="button"
+            onclick="closeModals()"
+        >
+            ×
+        </button>
+
+        <h2>
+            Profile
+        </h2>
+
+        <div class="profile-avatar">
+            04
+        </div>
+
+        <div id="profileContent">
+            Loading...
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     SETTINGS MODAL
+========================= -->
+
+<div
+    id="settingsModal"
+    class="modal hidden"
+>
+
+    <div class="modal-card">
+
+        <button
+            class="close-modal"
+            type="button"
+            onclick="closeModals()"
+        >
+            ×
+        </button>
+
+        <h2>
+            Settings
+        </h2>
+
+
+        <div class="setting-row">
+
+            <span>
+                AI Engine
+            </span>
+
+            <strong>
+                Gemini Flash
+            </strong>
+
+        </div>
+
+
+        <div class="setting-row">
+
+            <span>
+                Image Generation
+            </span>
+
+            <strong>
+                Gemini
+            </strong>
+
+        </div>
+
+
+        <div class="setting-row">
+
+            <span>
+                Attachment Limit
+            </span>
+
+            <strong>
+                200 MB
+            </strong>
+
+        </div>
+
+
+        <div class="setting-row">
+
+            <span>
+                Plan
+            </span>
+
+            <strong>
+                Free
+            </strong>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+
+<!-- =========================
+     JAVASCRIPT
+     IMPORTANT:
+     This MUST be OUTSIDE the
+     {% if %} / {% else %} block.
+========================= -->
+
+<script
+    src="{{ url_for('static', filename='script.js') }}"
+></script>
+
+
+</body>
+</html>
