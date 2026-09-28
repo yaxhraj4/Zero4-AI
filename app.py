@@ -20,10 +20,6 @@ from google import genai
 from google.genai import types
 
 
-# =========================================================
-# APP CONFIG
-# =========================================================
-
 app = Flask(__name__)
 
 app.secret_key = os.environ.get(
@@ -31,7 +27,6 @@ app.secret_key = os.environ.get(
     "zero4-change-this-secret-key"
 )
 
-# 200 MB upload limit
 app.config["MAX_CONTENT_LENGTH"] = 200 * 1024 * 1024
 
 DATABASE = "zero4.db"
@@ -39,7 +34,6 @@ DATABASE = "zero4.db"
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
 CHAT_MODEL = "gemini-2.5-flash"
-
 IMAGE_MODEL = "gemini-3.1-flash-image"
 
 gemini_client = None
@@ -50,20 +44,13 @@ if GEMINI_API_KEY:
     )
 
 
-# =========================================================
-# DATABASE
-# =========================================================
-
 def get_db():
     connection = sqlite3.connect(DATABASE)
-
     connection.row_factory = sqlite3.Row
-
     return connection
 
 
 def init_db():
-
     connection = get_db()
 
     connection.execute("""
@@ -78,16 +65,11 @@ def init_db():
     """)
 
     connection.commit()
-
     connection.close()
 
 
 init_db()
 
-
-# =========================================================
-# LOGIN CHECK
-# =========================================================
 
 def login_required(function):
 
@@ -95,7 +77,6 @@ def login_required(function):
     def wrapper(*args, **kwargs):
 
         if "user_id" not in session:
-
             return jsonify({
                 "success": False,
                 "error": "Please login first."
@@ -106,16 +87,12 @@ def login_required(function):
     return wrapper
 
 
-# =========================================================
-# ZERO4 AI SYSTEM PROMPT
-# =========================================================
-
 SYSTEM_INSTRUCTION = """
 You are Zero4 AI Flash.
 
 You are a fast, friendly and helpful multilingual AI assistant.
 
-You can naturally understand and respond in:
+You can understand and respond naturally in:
 
 English
 Hindi
@@ -142,7 +119,7 @@ Always follow the language and style used by the user.
 For normal questions:
 Give clear and useful answers.
 
-For school and mathematics:
+For mathematics:
 Prefer:
 
 Given
@@ -150,12 +127,8 @@ Formula
 Solution
 Answer
 
-Avoid confusing raw LaTeX when normal text is easier.
-
 For coding:
 Provide complete working code when requested.
-Use the programming language requested by the user.
-Explain important parts clearly.
 
 Be friendly, direct and practical.
 
@@ -163,24 +136,14 @@ You are Zero4 AI Flash.
 """
 
 
-# =========================================================
-# HOME
-# =========================================================
-
 @app.route("/")
 def home():
 
-    logged_in = "user_id" in session
-
     return render_template(
         "index.html",
-        logged_in=logged_in
+        logged_in=("user_id" in session)
     )
 
-
-# =========================================================
-# REGISTER
-# =========================================================
 
 @app.route("/register", methods=["POST"])
 def register():
@@ -229,9 +192,7 @@ def register():
             "error": "An account with this email already exists."
         }), 409
 
-    password_hash = generate_password_hash(
-        password
-    )
+    password_hash = generate_password_hash(password)
 
     cursor = connection.execute(
         """
@@ -264,10 +225,6 @@ def register():
         "message": "Account created successfully."
     })
 
-
-# =========================================================
-# LOGIN
-# =========================================================
 
 @app.route("/login", methods=["POST"])
 def login():
@@ -326,10 +283,6 @@ def login():
     })
 
 
-# =========================================================
-# LOGOUT
-# =========================================================
-
 @app.route("/logout")
 def logout():
 
@@ -339,10 +292,6 @@ def logout():
         url_for("home")
     )
 
-
-# =========================================================
-# USER PROFILE
-# =========================================================
 
 @app.route("/me")
 @login_required
@@ -381,10 +330,6 @@ def me():
     })
 
 
-# =========================================================
-# CHAT
-# =========================================================
-
 @app.route("/chat", methods=["POST"])
 @login_required
 def chat():
@@ -396,9 +341,7 @@ def chat():
             "error": "Gemini API is not configured on the server."
         }), 500
 
-    data = request.get_json(
-        silent=True
-    ) or {}
+    data = request.get_json(silent=True) or {}
 
     message = str(
         data.get("message", "")
@@ -414,11 +357,8 @@ def chat():
     try:
 
         response = gemini_client.models.generate_content(
-
             model=CHAT_MODEL,
-
             contents=message,
-
             config=types.GenerateContentConfig(
                 system_instruction=SYSTEM_INSTRUCTION,
                 temperature=0.7
@@ -428,7 +368,6 @@ def chat():
         answer = response.text
 
         if not answer:
-
             answer = "Sorry, I could not generate a response."
 
         return jsonify({
@@ -450,10 +389,6 @@ def chat():
         }), 500
 
 
-# =========================================================
-# IMAGE GENERATION
-# =========================================================
-
 @app.route("/generate-image", methods=["POST"])
 @login_required
 def generate_image():
@@ -465,9 +400,7 @@ def generate_image():
             "error": "Gemini API is not configured."
         }), 500
 
-    data = request.get_json(
-        silent=True
-    ) or {}
+    data = request.get_json(silent=True) or {}
 
     prompt = str(
         data.get("prompt", "")
@@ -483,11 +416,8 @@ def generate_image():
     try:
 
         response = gemini_client.models.generate_content(
-
             model=IMAGE_MODEL,
-
             contents=prompt,
-
             config=types.GenerateContentConfig(
                 response_modalities=["IMAGE"]
             )
@@ -497,14 +427,9 @@ def generate_image():
 
         for part in response.parts:
 
-            if getattr(
-                part,
-                "inline_data",
-                None
-            ):
+            if getattr(part, "inline_data", None):
 
                 image_part = part.inline_data
-
                 break
 
         if image_part is None:
@@ -516,14 +441,8 @@ def generate_image():
 
         image_bytes = image_part.data
 
-        if not isinstance(
-            image_bytes,
-            bytes
-        ):
-
-            image_bytes = bytes(
-                image_bytes
-            )
+        if not isinstance(image_bytes, bytes):
+            image_bytes = bytes(image_bytes)
 
         image_base64 = base64.b64encode(
             image_bytes
@@ -538,8 +457,8 @@ def generate_image():
             "success": True,
             "type": "image",
             "image": (
-                f"data:{mime_type};"
-                f"base64,{image_base64}"
+                f"data:{mime_type};base64,"
+                f"{image_base64}"
             )
         })
 
@@ -556,14 +475,7 @@ def generate_image():
         }), 500
 
 
-# =========================================================
-# FILE / IMAGE ATTACHMENT
-# =========================================================
-
-@app.route(
-    "/analyze-file",
-    methods=["POST"]
-)
+@app.route("/analyze-file", methods=["POST"])
 @login_required
 def analyze_file():
 
@@ -574,9 +486,7 @@ def analyze_file():
             "error": "Gemini API is not configured."
         }), 500
 
-    uploaded_file = request.files.get(
-        "file"
-    )
+    uploaded_file = request.files.get("file")
 
     user_message = request.form.get(
         "message",
@@ -599,10 +509,6 @@ def analyze_file():
             "error": "The selected file is empty."
         }), 400
 
-    # =====================================================
-    # 200 MB LIMIT
-    # =====================================================
-
     max_size = 200 * 1024 * 1024
 
     if len(file_bytes) > max_size:
@@ -617,7 +523,6 @@ def analyze_file():
         or "application/octet-stream"
     )
 
-    # Currently allow images and text-based files.
     allowed = (
         mime_type.startswith("image/")
         or mime_type.startswith("text/")
@@ -645,19 +550,15 @@ def analyze_file():
         prompt = (
             user_message
             if user_message
-            else
-            "Analyze this attachment and explain it clearly."
+            else "Analyze this attachment and explain it clearly."
         )
 
         response = gemini_client.models.generate_content(
-
             model=CHAT_MODEL,
-
             contents=[
                 file_part,
                 prompt
             ],
-
             config=types.GenerateContentConfig(
                 system_instruction=SYSTEM_INSTRUCTION,
                 temperature=0.5
@@ -667,10 +568,7 @@ def analyze_file():
         answer = response.text
 
         if not answer:
-
-            answer = (
-                "I could not analyze this attachment."
-            )
+            answer = "I could not analyze this attachment."
 
         return jsonify({
             "success": True,
@@ -694,10 +592,6 @@ def analyze_file():
         }), 500
 
 
-# =========================================================
-# 413 LARGE FILE ERROR
-# =========================================================
-
 @app.errorhandler(413)
 def file_too_large(error):
 
@@ -706,10 +600,6 @@ def file_too_large(error):
         "error": "File is too large. Maximum upload size is 200 MB."
     }), 413
 
-
-# =========================================================
-# START SERVER
-# =========================================================
 
 if __name__ == "__main__":
 
